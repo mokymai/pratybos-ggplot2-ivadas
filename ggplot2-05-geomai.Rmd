@@ -1,0 +1,193 @@
+---
+title: "Sistemos ggplot2 pagrindai"
+subtitle: "Geomai"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+```{r setup}
+library(scales) 
+library(MASS)
+library(plotly)
+
+library(tidyverse)
+
+knitr::opts_chunk$set(fig.height = 3, fig.width = 6)
+
+Sys.setlocale(locale = "Lithuanian")
+```
+
+
+Geometriniai objektai (geomai)
+============================================================================= 
+
+Geomai
+----------------------------------------------------------------------------- 
+
+```{r}
+# Pirmasis 
+ggplot(data = mpg) + 
+	geom_point(mapping = aes(x = displ, y = hwy)) 
+```
+
+```{r}
+# Antrasis 
+ggplot(data = mpg) + 
+	geom_smooth(mapping = aes(x = displ, y = hwy)) 
+```
+
+Geomų ir estetinių elementų (ne)suderinamumas
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(data = mpg) +
+    geom_smooth(mapping = aes(x = displ,
+                              y = hwy,
+                              linetype = drv)) 
+```
+
+ggplot2 ir ją papildantys paketai
+----------------------------------------------------------------------------- 
+https://www.ggplot2-exts.org
+
+
+
+
+Estetikos elementas `group`
+----------------------------------------------------------------------------- 
+
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+              
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, group = drv))
+```
+    
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(
+    mapping = aes(x = displ, y = hwy, color = drv),
+    show.legend = FALSE
+  )
+```
+
+Keli geomai tame pačiame grafike
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(data = mpg) + 
+	geom_point(mapping = aes(x = displ, y = hwy)) + 
+	geom_smooth(mapping = aes(x = displ, y = hwy))
+``` 
+
+Keli geomai tame pačiame grafike: rašome glausčiau
+-----------------------------------------------------------------------------
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+	geom_point() + 
+	geom_smooth() 
+```
+
+Numatytojo išdėstymo papildymas ar pakeitimas
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+   geom_point(mapping = aes(color = class)) + 
+   geom_smooth() 
+```
+
+
+Numatytųjų duomenų keitimas
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+	geom_point(mapping = aes(color = class)) + 
+	geom_smooth(data = filter(mpg, class == "subcompact"), se = FALSE) 
+```
+
+
+Užduotys: Geomai
+----------------------------------------------------------------------------- 
+
+1. Kurį geomą naudosite braižyti: 
+    * Linijų grafiką?
+    * Stačiakampę diagramą (boxplot)?
+    * Histogramą?
+    * Sklaidos diagramą (scatterplot)?
+
+2. **Mintimis** įvykdykite šį kodą ir nuspėkite rezultatą. Tik po to patikrinkite, ar jūsų mintys sutapo su tikruoju atsakymu.
+
+```{r eval=FALSE, include=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+	geom_point() + 
+	geom_smooth(se = FALSE) 
+```
+
+3. Viename iš šio skyriaus grafikų buvo panaudotas argumentas `show.legend = FALSE`. Ką jis daro? Kas įvyksta jį pašalinus? Kodėl jis buvo naudotas ankstesniuose pavyzdžiuose?
+
+```{r}
+
+```
+
+4. Ką atlieka `se` argumentas funkcijoje `geom_smooth()`?
+
+```{r}
+
+```
+
+5. Ar šie 2 grafikai atrodys skirtingai? Kodėl?
+
+```{r eval=FALSE, include=FALSE}
+# Grafikas 1
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+    geom_point() +
+    geom_smooth() 
+```
+```{r eval=FALSE, include=FALSE}
+# Grafikas 2
+ggplot() + 
+    geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) +
+    geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy)) 
+```
+
+
+6. Parašykite R kodą, kuris braižo šiuos šešis grafikus
+
+```{r}
+knitr::include_graphics("parasykite-koda-grafikams.png")
+```
+
+```{r}
+# Grafikas 1
+
+```
+
+```{r}
+# Grafikas 2
+
+```
+
+```{r}
+# Grafikas 3
+
+```
+
+```{r}
+# Grafikas 4
+
+```
+
+```{r}
+# Grafikas 5
+
+```
+
+```{r}
+# Grafikas 6
+
+```
+

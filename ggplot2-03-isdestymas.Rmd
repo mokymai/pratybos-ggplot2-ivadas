@@ -1,0 +1,132 @@
+---
+title: "Sistemos ggplot2 pagrindai"
+subtitle: "Estetinis išdėstymas"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+```{r setup}
+library(tidyverse)
+
+knitr::opts_chunk$set(fig.height = 3, fig.width = 6)
+
+Sys.setlocale(locale = "Lithuanian")
+```
+
+Estetinis išdėstymas
+============================================================================= 
+
+Klases išdėstome spalvų skalėje
+----------------------------------------------------------------------------- 
+
+```{r}
+ ggplot(data = mpg) + 
+    geom_point(mapping = aes(x = displ, y = hwy, color = class)) 
+```
+
+Klases išdėstome dydžių skalėje
+----------------------------------------------------------------------------- 
+
+```{r}
+ggplot(data = mpg) + 
+     geom_point(mapping = aes(x = displ, y = hwy, size = class)) 
+```
+
+Kitos skalės išdėstymui
+----------------------------------------------------------------------------- 
+
+```{r}
+# alpha – permatomumo skalė
+ggplot(data = mpg) + 
+    geom_point(mapping = aes(x = displ, y = hwy, alpha = class)) 
+```
+```{r}
+# shape – formų skalė
+ ggplot(data = mpg) +
+   geom_point(mapping = aes(x = displ, y = hwy, shape = class)) 
+```
+
+Estetinių savybių parinkimas rankiniu būdu
+----------------------------------------------------------------------------- 
+
+```{r}
+ggplot(data = mpg) + 
+     geom_point(mapping = aes(x = displ, y = hwy), color = "blue") 
+```
+
+Kaip nurodyti spalvas?
+----------------------------------------------------------------------------- 
+Spalvų kodų parinkimas:
+https://www.w3schools.com/colors/colors_picker.asp
+
+
+
+Užduotys: estetinis išdėstymas
+----------------------------------------------------------------------------- 
+
+1. Kur kode klaida? Kodėl taškai ne mėlyni? Ištaisykite.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+2. Kurie lentelės `mpg` kintamieji yra kategoriniai? Kurie – tolydieji? (Užuomina: `?mpg`). Kaip tai pamatyti atspausdinus `mpg`?
+
+```{r}
+
+```
+
+3. Pasirinkite tolydųjį kintamąjį ir atidėkite jo reikšmes šiose skalėse: `color`, `size`, `shape`. 
+
+```{r}
+
+```
+
+4. Kuo šių estetikos elementų (`color`, `size`, `shape`) išdėstymas skiriasi, jei atidedame *kategorinį* vs. *tolydųjį* kintamąjį? 
+
+
+```{r}
+
+```
+```{r}
+
+```
+
+
+5. Ką daro estetikos elementas `stroke`? Su kuriomis formomis jis veikia? (Užuomina: naudokite `geom_point`).
+
+```{r}
+
+```
+
+
+6. Kas nutinka, jei naudojate kelias skales (pvz., `color`, `size`) su keliais skirtingais kintamaisiais?
+
+```{r}
+
+```
+
+7. Kas nutinka, jei to paties kintamojo reikšmes atidedate keliose skirtingose skalėse (tarkime, `color` ir `shape`)?
+
+```{r}
+
+```
+
+8. Kas nutinka, jei su tam tikra skale susiejate ne konkretaus kintamojo pavadinimą (pvz., `aes(colour = displ)`), o kokį nors veiksmą su tuo kintamuoju, tarkime `aes(colour = displ < 5)`?
+
+```{r}
+
+```
+
+9. Nubraižykite grafiką ir jame rankiniu būdu parinkite spakvas naudodami:
+    * spalvų pavadinimus (rašyti kabtėse);
+    * šešioliktainius kodus (rašyti kabutėse);
+    * spalvų numerius tarp 1 ir 8, be kabučių.
+    
+```{r}
+
+```
+    

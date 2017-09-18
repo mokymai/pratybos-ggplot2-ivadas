@@ -1,0 +1,101 @@
+---
+title: "Sistemos ggplot2 pagrindai"
+subtitle: "Duomenys ir pirmieji žingsniai su ggplot2"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+```{r setup}
+library(tidyverse)
+
+knitr::opts_chunk$set(fig.height = 3, fig.width = 6)
+
+Sys.setlocale(locale = "Lithuanian")
+```
+
+Duomenys ir pirmieji žingsniai su `ggplot2`
+============================================================================= 
+
+Paketų užkrovimas
+----------------------------------------------------------------------------- 
+```{r}
+library(ggplot2)
+```
+
+```{r}
+library(tidyverse)
+```
+
+Duomenys: automobiliai
+----------------------------------------------------------------------------- 
+```{r}
+ggplot2::mpg
+```
+
+```{r}
+mpg
+```
+
+Mus dominantys kintamieji
+----------------------------------------------------------------------------- 
+
+```{r}
+# Atsakymas kortelėje „Help“
+?mpg
+```
+
+Rodome tik 2 kintamuosius: `displ` ir `hwy`
+```{r}
+dplyr::select(mpg, displ, hwy)
+```
+
+Pirmasis mūsų grafikas: sklaidos diagrama
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+
+Užduotys 1
+----------------------------------------------------------------------------- 
+
+```{r}
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+
+``` 
+
+```{r}
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, size = class))
+
+``` 
+
+```{r}
+# Left
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
+``` 
+
+```{r}
+# Right
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class))
+```
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+
+
+
+
+

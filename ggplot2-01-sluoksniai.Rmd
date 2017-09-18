@@ -1,0 +1,210 @@
+---
+title: "Sistemos ggplot2 pagrindai"
+subtitle: "Elementų sluoksniai"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup}
+library(scales) 
+library(MASS)
+library(plotly)
+
+library(tidyverse)
+
+knitr::opts_chunk$set(fig.height = 3, fig.width = 6)
+
+Sys.setlocale(locale = "Lithuanian")
+```
+
+
+
+Sistema `ggplot2`: grafikų sudarymo principai
+============================================================================= 
+
+
+Duomenys
+----------------------------------------------------------------------------- 
+```{r}
+library(MASS)
+MASS::mammals
+```
+
+```{r}
+data(mammals, package = "MASS")
+```
+
+```{r}
+dim(mammals)
+```
+
+```{r}
+str(mammals)
+```
+
+```{r}
+View(mammals)
+```
+
+```{r}
+# Rezultatas matysis „Help“ kortelėje
+?mammals
+```
+
+
+Grafikai sudaromi pridedant `ggplot2` sluoksnius su (grafiniais) elementais.
+
+
+Sklaidos diagrama – pradinė
+----------------------------------------------------------------------------- 
+```{r}
+library(ggplot2)
+ggplot(mammals, aes(x = body, y = brain)) +
+      geom_point()
+```
+	  
+Žvalgomasis grafikas
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(mammals, aes(x = body, y = brain)) +
+    geom_point(alpha = 0.6) +
+    stat_smooth(method = "lm", col = "red", se = FALSE)
+```
+
+Žvalgomasis grafikas (patikslintas)
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(mammals, aes(x = body, y = brain)) +
+    geom_point(alpha = 0.6) +
+    coord_fixed() +
+    scale_x_log10() +
+    scale_y_log10() +
+    stat_smooth(method = "lm",
+                col = "#C42126",
+                se = FALSE,
+                size = 1)
+```
+
+Straipsniui parengtas grafikas
+----------------------------------------------------------------------------- 
+```{r}
+library(scales) # funkcijos trans_breaks() ir trans_format()
+
+ggplot(mammals, aes(x = body, y = brain)) +
+    annotation_logticks() +
+    geom_point(alpha = 0.6) +
+    coord_fixed(xlim = c(10^-3, 10^4), ylim = c(10^-1, 10^4)) +
+    scale_x_log10(expression("Body weight (log"["10"]*"(Kg))"),
+                  breaks = trans_breaks("log10", function(x) 10^x),
+                  labels = trans_format("log10", math_format(10^.x))) +
+    scale_y_log10(expression("Brain weight (log"["10"]*"(g))"),
+                  breaks = trans_breaks("log10", function(x) 10^x),
+                  labels = trans_format("log10", math_format(10^.x))) +
+    stat_smooth(method = "lm", col = "#C42126", se = FALSE, size = 1) +
+    theme_classic()
+```
+
+
+
+Sistema `ggplot2`: elementų sluoksniai
+============================================================================= 
+
+Sistemos ggplot2 grafikus sudaro 7 sluoksniai: pirmus tris nurodyti privaloma.
+
+
+Sluoksniai (1): duomenys
+----------------------------------------------------------------------------- 
+
+```{r}
+iris
+```
+
+```{r}
+ggplot(iris)
+```
+
+Sluoksniai (2): estetinis išdėstymas
+----------------------------------------------------------------------------- 
+
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) 
+```
+
+
+Sluoksniai (3): geometriniai objektai
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+    geom_jitter(alpha = 0.6)
+```
+
+Sluoksniai (4): facetės
+------------------------------------------------------------------------------ 
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+    geom_jitter(alpha = 0.6) +
+    facet_grid(. ~ Species)
+```
+
+Sluoksniai (5): statistiniai elementai
+----------------------------------------------------------------------------- 
+
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+    geom_jitter(alpha = 0.6) +
+    facet_grid(. ~ Species) +
+    stat_smooth(method = "lm", se = F, col = "red")
+```
+
+
+
+
+Sluoksniai (6): koordinačių sistema
+----------------------------------------------------------------------------- 
+```{r}
+levels(iris$Species) <- c("Setosa", "Versicolor", "Virginica")
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+    geom_jitter(alpha = 0.6) +
+    facet_grid(. ~ Species) +
+    stat_smooth(method = "lm", se = F, col = "red") +
+    scale_y_continuous("Sepal Width (cm)",
+                       limits = c(2,5), 
+                       expand = c(0,0)) +
+    scale_x_continuous("Sepal Length (cm)",
+                       limits = c(4,8),
+                       expand = c(0,0)) +
+    coord_equal()
+```
+
+Sluoksniai (7): temos elementai
+----------------------------------------------------------------------------- 
+```{r}
+levels(iris$Species) <- c("Setosa", "Versicolor", "Virginica")
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+    geom_jitter(alpha = 0.6) +
+    facet_grid(. ~ Species) +
+    stat_smooth(method = "lm", se = F, col = "red") +
+    scale_y_continuous("Sepal Width (cm)",
+                       limits = c(2,5), 
+                       expand = c(0,0)) +
+    scale_x_continuous("Sepal Length (cm)",
+                       limits = c(4,8),
+                       expand = c(0,0)) +
+    coord_equal() +
+    theme(panel.background = element_blank(),
+          plot.background = element_blank(),
+          legend.background = element_blank(),
+          legend.key = element_blank(),
+          strip.background = element_blank(),
+          axis.text = element_text(colour = "black"),
+          axis.ticks = element_line(colour = "black"),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.line = element_line(colour = "black"),
+          strip.text = element_blank(),
+          panel.spacing = unit(1, "lines")
+    )
+```

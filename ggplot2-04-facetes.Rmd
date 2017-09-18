@@ -1,0 +1,121 @@
+---
+title: "Sistemos ggplot2 pagrindai"
+subtitle: "Facetės"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+```{r setup}
+library(tidyverse)
+
+knitr::opts_chunk$set(fig.height = 3, fig.width = 6)
+
+Sys.setlocale(locale = "Lithuanian")
+```
+
+Facetės
+============================================================================= 
+
+Funkcija facet_wrap()
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+Funkcija facet_grid() - 1
+----------------------------------------------------------------------------- 
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(drv ~ cyl)
+```
+
+Funkcija facet_grid() - 2
+----------------------------------------------------------------------------- 
+```{r}
+t <- ggplot(mpg, aes(cty, hwy)) +
+     geom_point()
+```
+
+```{r}
+t + facet_grid(. ~ fl)
+```
+
+```{r}
+t + facet_grid(year ~ .)
+```
+
+```{r}
+t + facet_grid(year ~ fl)
+```
+
+```{r}
+t + facet_wrap(~ fl)
+```
+
+
+
+Užduotys: facetės
+----------------------------------------------------------------------------- 
+
+1. Kas nutinka, jei facetes kuriame pagal tolydųjį kintamąjį?
+
+```{r}
+
+```
+
+2. Ką rodo tušti langeliai įvykdžius funkciją `facet_grid(drv ~ cyl)`? Kaip jie susiję su šiuo grafiku: 
+```{r}
+ggplot(data = mpg) + 
+     geom_point(mapping = aes(x = drv, y = cyl)) 
+```
+
+3. Ką daro žemiau pateiktas kodas? Ką reiškia taškas (`.`)?
+
+```{r}
+ggplot(data = mpg) + 
+    geom_point(mapping = aes(x = displ, y = hwy)) + 
+    facet_grid(drv ~ .) 
+
+```
+
+```{r}
+ggplot(data = mpg) + 
+   geom_point(mapping = aes(x = displ, y = hwy)) + 
+   facet_grid(. ~ cyl) 
+```
+
+4. Patyrinėkite antrąją grafiko facetę (kodas žemiau).
+    a. Kokie privalumai naudoti facetes vs. išdėstymą spalvomis? 
+    b. Kokie trūkumai?
+    c. Kaip balansas tarp privalumų ir trūkumų pakistų, jei turėtumėte žymiai daugiau duomenų?
+
+
+
+```{r}
+ggplot(data = mpg) + 
+    geom_point(mapping = aes(x = displ, y = hwy)) + 
+    facet_wrap(~ class, nrow = 2) 
+```
+
+Spalvomis išdėstykite klasių pavadinimus
+```{r}
+ggplot(data = mpg) + 
+    geom_point(mapping = aes(x = displ, y = hwy, color =  )) + 
+    facet_wrap(~ class, nrow = 2) 
+```
+
+
+5. Perskaitykite funkcijos aprašymą: `?facet_wrap`.
+    a. Kokią funkciją atlieka `nrow`? 
+    b. Kokią funkciją atlieka `ncol`? 
+    c. Kurios kitos funkcijos kontroliuoja facečių išdėstymą? 
+    d. Kodėl funkcija `facet_grid()` neturi parametrų `nrow` ir `ncol`?
+
+
+
+6. Kokiu atveju naudodami `facet_grid()` kintamąjį su didesniu kiekiu skirtingų reikšmių (faktoriaus lygių) turėtumėte atvaizduoti facečių stulpeliuose? Kodėl?
